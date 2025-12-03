@@ -4,6 +4,7 @@
  */
 
 import { dom } from './utils.js';
+import { api } from './api.js';
 
 const userManager = {
     /**
@@ -117,7 +118,7 @@ const userManager = {
 
                 <!-- 退出登录 -->
                 <div class="card">
-                    <button class="btn btn-secondary w-full" style="color: var(--color-error); border-color: rgba(239, 68, 68, 0.3);">
+                    <button class="btn btn-secondary w-full js-logout-btn" style="color: var(--color-error); border-color: rgba(239, 68, 68, 0.3);">
                         <i class="fas fa-sign-out-alt"></i> 退出登录
                     </button>
                 </div>
@@ -134,6 +135,16 @@ const userManager = {
         if (changePwdBtn) {
             changePwdBtn.addEventListener('click', () => {
                 this.renderChangePasswordModal();
+            });
+        }
+
+        // 绑定退出登录按钮事件
+        const logoutBtn = dom.$('.js-logout-btn');
+        if (logoutBtn) {
+            logoutBtn.addEventListener('click', () => {
+                if (confirm('确定要退出登录吗？')) {
+                    api.auth.logout();
+                }
             });
         }
     },

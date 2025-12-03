@@ -483,6 +483,59 @@ export const api = {
     },
 
     /**
+     * 认证相关接口
+     */
+    auth: {
+        /**
+         * 登录
+         * @param {string} email - 邮箱
+         * @param {string} password - 密码
+         * @returns {Promise<object>}
+         */
+        async login(email, password) {
+            // 模拟登录请求
+            // return http.post('/auth/login', { email, password });
+
+            // 模拟API延迟
+            await new Promise(resolve => setTimeout(resolve, 800));
+
+            // 模拟验证
+            if (email && password) {
+                // 模拟成功响应
+                return {
+                    token: 'mock_token_' + Date.now(),
+                    user: {
+                        id: 1,
+                        username: 'ME',
+                        email: email,
+                        avatar: 'M'
+                    }
+                };
+            } else {
+                throw new Error('请输入邮箱和密码');
+            }
+        },
+
+        /**
+         * 注册
+         * @param {string} email - 邮箱
+         * @param {string} password - 密码
+         * @returns {Promise<object>}
+         */
+        register(email, password) {
+            return http.post('/auth/register', { email, password });
+        },
+
+        /**
+         * 退出登录
+         */
+        logout() {
+            localStorage.removeItem('access_token');
+            window.location.href = 'login.html';
+        }
+    },
+
+    /**
      * 统计相关接口
      */
     stats: {

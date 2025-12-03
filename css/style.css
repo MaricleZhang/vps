@@ -529,3 +529,33 @@ img {
 .flex-1 {
     flex: 1;
 }
+/* Additional Utilities */
+.bg-secondary {
+    background: var(--bg-secondary);
+}
+
+.p-md {
+    padding: var(--spacing-md);
+}
+
+.rounded {
+    border-radius: var(--radius-md);
+}
+
+.btn-text {
+    background: transparent;
+    color: var(--text-secondary);
+    padding: 0;
+    height: auto;
+}
+
+.btn-text:hover {
+    color: var(--text-primary);
+    background: transparent;
+}
+
+.sticky-top {
+    position: sticky;
+    top: var(--spacing-md);
+    z-index: 10;
+}

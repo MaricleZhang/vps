@@ -5,6 +5,7 @@
 
 import dashboard from './dashboard.js';
 import shopManager from './shop.js';
+import checkoutManager from './checkout.js';
 import { dom } from './utils.js';
 
 /**
@@ -28,8 +29,16 @@ class App {
         // 绑定全局事件
         this.bindGlobalEvents();
 
-        // 初始化首页
-        await this.loadPage('home');
+        // 解析URL参数以确定初始页面
+        const urlParams = new URLSearchParams(window.location.search);
+        const page = urlParams.get('page') || 'home';
+        const params = {};
+        for (const [key, value] of urlParams.entries()) {
+            if (key !== 'page') params[key] = value;
+        }
+
+        // 初始化页面
+        await this.loadPage(page, true, params);
 
         console.log('✅ 应用初始化完成');
     }
@@ -90,7 +99,8 @@ class App {
         // 监听浏览器后退/前进
         window.addEventListener('popstate', (e) => {
             const page = e.state?.page || 'home';
-            this.loadPage(page, false);
+            const params = e.state?.params || {};
+            this.loadPage(page, false, params);
         });
     }
 
@@ -125,12 +135,16 @@ class App {
      * 导航到指定页面
      * @param {string} page - 页面名称
      */
-    navigateTo(page) {
+    navigateTo(page, params = {}) {
+        // 构建URL查询参数
+        const urlParams = new URLSearchParams({ page, ...params });
+        const url = `?${urlParams.toString()}`;
+
         // 更新URL（不刷新页面）
-        history.pushState({ page }, '', `?page=${page}`);
+        history.pushState({ page, params }, '', url);
 
         // 加载页面
-        this.loadPage(page);
+        this.loadPage(page, true, params);
 
         // 关闭移动端侧边栏
         if (window.innerWidth <= 768) {
@@ -143,7 +157,7 @@ class App {
      * @param {string} page - 页面名称
      * @param {boolean} updateNav - 是否更新导航状态
      */
-    async loadPage(page, updateNav = true) {
+    async loadPage(page, updateNav = true, params = {}) {
         this.currentPage = page;
 
         // 更新导航激活状态
@@ -164,6 +178,10 @@ class App {
 
             case 'subscribe':
                 this.loadSubscribePage();
+                break;
+
+            case 'checkout':
+                this.loadCheckoutPage(params);
                 break;
 
             case 'nodes':
@@ -221,6 +239,14 @@ class App {
     async loadSubscribePage() {
         // 初始化购买订阅页面
         await shopManager.init();
+    }
+
+    /**
+     * 加载结账页面
+     */
+    async loadCheckoutPage(params) {
+        // 初始化结账页面
+        await checkoutManager.init(params.plan);
     }
 
     /**

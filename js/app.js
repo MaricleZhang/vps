@@ -7,6 +7,7 @@ import dashboard from './dashboard.js';
 import shopManager from './shop.js';
 import checkoutManager from './checkout.js';
 import nodesManager from './nodes.js';
+import userManager from './user.js';
 import { dom } from './utils.js';
 
 /**
@@ -261,19 +262,9 @@ class App {
     /**
      * 加载账户页面
      */
-    loadAccountPage() {
-        const content = dom.$('.content');
-        if (!content) return;
-
-        content.innerHTML = `
-      <div class="card">
-        <h2 class="card-title mb-lg">个人中心</h2>
-        <div class="text-secondary">
-          <p class="mb-md">个人中心页面开发中...</p>
-          <p>这里将展示用户信息、账户设置等内容。</p>
-        </div>
-      </div>
-    `;
+    async loadAccountPage() {
+        // 初始化用户中心页面
+        await userManager.init();
     }
 
     /**

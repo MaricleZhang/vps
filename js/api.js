@@ -542,6 +542,44 @@ export const api = {
         logout() {
             localStorage.removeItem('access_token');
             window.location.href = '/login.html';
+        },
+
+        /**
+         * 发送重置密码验证码
+         * @param {string} email 
+         */
+        async sendResetCode(email) {
+            // 模拟API调用延迟
+            await new Promise(resolve => setTimeout(resolve, 1000));
+
+            // 模拟发送成功
+            console.log(`验证码已发送至 ${email}`);
+            return {
+                success: true,
+                message: '验证码已发送'
+            };
+        },
+
+        /**
+         * 重置密码
+         * @param {string} email 
+         * @param {string} code 
+         * @param {string} newPassword 
+         */
+        async resetPassword(email, code, newPassword) {
+            // 模拟API调用延迟
+            await new Promise(resolve => setTimeout(resolve, 1500));
+
+            // 模拟验证码校验
+            if (!code) {
+                throw new Error('请输入验证码');
+            }
+
+            // 模拟重置成功
+            return {
+                success: true,
+                message: '密码重置成功'
+            };
         }
     },
 

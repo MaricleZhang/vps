@@ -69,6 +69,13 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
+        // 密码复杂度验证：至少8位，包含字母和数字
+        const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
+        if (!passwordRegex.test(password)) {
+            alert('密码必须至少包含8个字符，且同时包含字母和数字');
+            return;
+        }
+
         if (verifyCode !== '123456') {
             alert('验证码错误（模拟验证码为：123456）');
             return;

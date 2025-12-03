@@ -286,12 +286,34 @@
 }
 
 /* 进度条变体 */
-.progress-fill.success {
+.progress-fill.success,
+.progress-fill.normal {
     background: var(--gradient-success);
 }
 
 .progress-fill.warning {
-    background: var(--gradient-warning);
+    background: linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%);
+}
+
+.progress-fill.critical {
+    background: linear-gradient(135deg, #ef4444 0%, #f87171 100%);
+}
+
+/* 流量警告动画 */
+@keyframes pulse {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.6;
+    }
+}
+
+.traffic-warning-icon {
+    animation: pulse 2s ease-in-out infinite;
 }
 
 /* ==========================================
@@ -530,26 +552,199 @@
 .tabs {
     display: flex;
     gap: var(--spacing-sm);
-    border-bottom: 1px solid var(--border-color);
+    border-bottom: 2px solid var(--border-color);
     margin-bottom: var(--spacing-lg);
 }
 
 .tab {
     padding: var(--spacing-sm) var(--spacing-lg);
     cursor: pointer;
-    transition: all var(--transition-fast);
     color: var(--text-secondary);
-    border-bottom: 2px solid transparent;
     font-weight: 500;
+    border-bottom: 3px solid transparent;
+    transition: all var(--transition-normal);
+    position: relative;
+    background: transparent;
 }
 
 .tab:hover {
     color: var(--text-primary);
+    background: var(--bg-hover);
 }
 
 .tab.active {
     color: var(--primary-color);
     border-bottom-color: var(--primary-color);
+    background: linear-gradient(180deg, transparent 0%, rgba(79, 124, 255, 0.05) 100%);
+    font-weight: 600;
+}
+
+.tab.active::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: var(--gradient-primary);
+    border-radius: 2px 2px 0 0;
+}
+
+/* ==========================================
+   订阅卡片增强
+   ========================================== */
+
+.subscription-card {
+    position: relative;
+    overflow: visible;
+}
+
+.subscription-info {
+    background: var(--bg-secondary);
+    padding: var(--spacing-md);
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border-color);
+}
+
+.info-row {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+    padding: var(--spacing-sm) 0;
+}
+
+.info-row:not(:last-child) {
+    border-bottom: 1px solid var(--border-color);
+}
+
+.info-label {
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+    font-weight: 500;
+    min-width: 100px;
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+}
+
+.info-value {
+    color: var(--text-primary);
+    font-size: 0.875rem;
+    flex: 1;
+}
+
+.subscribe-url {
+    background: var(--bg-tertiary);
+    padding: 6px 12px;
+    border-radius: var(--radius-sm);
+    font-size: 0.75rem;
+    font-family: 'Monaco', 'Menlo', 'Courier New', monospace;
+    color: var(--primary-color);
+    border: 1px solid var(--border-color);
+    display: inline-block;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.subscription-actions {
+    display: flex;
+    gap: var(--spacing-sm);
+    flex-wrap: wrap;
+}
+
+.btn-outline {
+    background: transparent;
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
+}
+
+.btn-outline:hover:not(:disabled) {
+    background: var(--bg-hover);
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+}
+
+/* ==========================================
+   快捷套餐卡片
+   ========================================== */
+
+.quick-plan-card {
+    border: 2px solid var(--border-color);
+    transition: all var(--transition-normal);
+}
+
+.quick-plan-card:hover {
+    border-color: var(--primary-color);
+    box-shadow: var(--shadow-lg);
+}
+
+.plan-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: var(--radius-lg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    flex-shrink: 0;
+}
+
+.plan-icon.primary {
+    background: linear-gradient(135deg, rgba(79, 124, 255, 0.2) 0%, rgba(79, 124, 255, 0.1) 100%);
+}
+
+.plan-icon.danger {
+    background: linear-gradient(135deg, rgba(239, 68, 68, 0.2) 0%, rgba(239, 68, 68, 0.1) 100%);
+}
+
+.plan-icon.success {
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.2) 0%, rgba(16, 185, 129, 0.1) 100%);
+}
+
+.plan-price {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--primary-color);
+}
+
+.plan-features {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xs);
+}
+
+.feature-item {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+}
+
+.btn-block {
+    width: 100%;
+    justify-content: center;
+}
+
+/* ==========================================
+   平台选择器增强
+   ========================================== */
+
+.platform-btn.selected {
+    border-color: var(--primary-color);
+    background: linear-gradient(135deg, rgba(79, 124, 255, 0.1) 0%, rgba(102, 126, 234, 0.05) 100%);
+    box-shadow: 0 0 0 3px rgba(79, 124, 255, 0.1);
+}
+
+.platform-btn.selected .platform-icon {
+    transform: scale(1.1);
+}
+
+.platform-btn.selected .platform-name {
+    color: var(--primary-color);
+    font-weight: 600;
 }
 
 /* ==========================================
@@ -621,4 +816,181 @@
     width: 1px;
     background: var(--border-color);
     height: 100%;
+}
+
+/* ==========================================
+   流量走势图表
+   ========================================== */
+
+/* Period Selector */
+.traffic-period-selector {
+    display: flex;
+    gap: var(--spacing-xs);
+    background: var(--bg-tertiary);
+    padding: 4px;
+    border-radius: var(--radius-md);
+}
+
+.period-btn {
+    padding: var(--spacing-xs) var(--spacing-md);
+    border-radius: var(--radius-sm);
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--text-secondary);
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.period-btn:hover {
+    color: var(--text-primary);
+    background: var(--bg-hover);
+}
+
+.period-btn.active {
+    background: var(--primary-color);
+    color: white;
+}
+
+/* Chart Card */
+.traffic-chart-card {
+    padding: var(--spacing-xl);
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    transition: all var(--transition-normal);
+}
+
+.traffic-chart-card:hover {
+    border-color: var(--border-hover);
+    box-shadow: var(--shadow-md);
+}
+
+/* Chart Container */
+.traffic-chart-container {
+    position: relative;
+    width: 100%;
+    height: 300px;
+    margin-bottom: var(--spacing-lg);
+}
+
+#traffic-chart-canvas {
+    width: 100%;
+    height: 100%;
+    cursor: crosshair;
+}
+
+/* Legend */
+.traffic-legend {
+    display: flex;
+    justify-content: center;
+    gap: var(--spacing-xl);
+    padding-top: var(--spacing-md);
+    border-top: 1px solid var(--border-color);
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+}
+
+.legend-indicator {
+    width: 12px;
+    height: 12px;
+    border-radius: 2px;
+    position: relative;
+}
+
+.legend-indicator.upload {
+    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+    box-shadow: 0 0 8px rgba(79, 172, 254, 0.4);
+}
+
+.legend-indicator.download {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    box-shadow: 0 0 8px rgba(102, 126, 234, 0.4);
+}
+
+.legend-label {
+    font-weight: 500;
+}
+
+/* Chart Tooltip */
+.chart-tooltip {
+    position: absolute;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    padding: var(--spacing-sm) var(--spacing-md);
+    font-size: 0.75rem;
+    color: var(--text-primary);
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity var(--transition-fast);
+    z-index: 1000;
+    box-shadow: var(--shadow-lg);
+    white-space: nowrap;
+}
+
+.chart-tooltip.visible {
+    opacity: 1;
+}
+
+.chart-tooltip-date {
+    font-weight: 600;
+    margin-bottom: var(--spacing-xs);
+    color: var(--primary-color);
+}
+
+.chart-tooltip-value {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+    margin-top: 2px;
+}
+
+.chart-tooltip-value .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .traffic-chart-container {
+        height: 250px;
+    }
+
+    .traffic-period-selector {
+        order: -1;
+        width: 100%;
+        justify-content: center;
+    }
+
+    .traffic-legend {
+        flex-direction: column;
+        align-items: center;
+        gap: var(--spacing-sm);
+    }
+}
+
+/* Chart Animation */
+@keyframes chartFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.traffic-chart-card {
+    animation: chartFadeIn 0.5s ease-out;
 }

@@ -153,6 +153,7 @@ class App {
         // 根据页面加载对应内容
         switch (page) {
             case 'home':
+                // 重新初始化首页以刷新数据
                 await dashboard.init();
                 break;
 

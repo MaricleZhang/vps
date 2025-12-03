@@ -11,18 +11,18 @@
  */
 export function formatDate(date, format = 'YYYY-MM-DD HH:mm:ss') {
   const d = new Date(date);
-  
+
   if (isNaN(d.getTime())) {
     return '无效日期';
   }
-  
+
   const year = d.getFullYear();
   const month = String(d.getMonth() + 1).padStart(2, '0');
   const day = String(d.getDate()).padStart(2, '0');
   const hours = String(d.getHours()).padStart(2, '0');
   const minutes = String(d.getMinutes()).padStart(2, '0');
   const seconds = String(d.getSeconds()).padStart(2, '0');
-  
+
   return format
     .replace('YYYY', year)
     .replace('MM', month)
@@ -41,14 +41,14 @@ export function timeFromNow(date) {
   const d = new Date(date);
   const now = new Date();
   const diff = d.getTime() - now.getTime();
-  
+
   if (diff < 0) {
     return '已过期';
   }
-  
+
   const days = Math.floor(diff / (1000 * 60 * 60 * 24));
   const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-  
+
   if (days > 0) {
     return `${days}天`;
   } else if (hours > 0) {
@@ -66,13 +66,13 @@ export function timeFromNow(date) {
  */
 export function formatBytes(bytes, decimals = 2) {
   if (bytes === 0) return '0 B';
-  
+
   const k = 1024;
   const dm = decimals < 0 ? 0 : decimals;
   const sizes = ['B', 'KB', 'MB', 'GB', 'TB', 'PB'];
-  
+
   const i = Math.floor(Math.log(bytes) / Math.log(k));
-  
+
   return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
 }
 
@@ -80,17 +80,23 @@ export function formatBytes(bytes, decimals = 2) {
  * 货币格式化
  * @param {number} amount - 金额
  * @param {string} currency - 货币符号，默认'CNY'
+ * @param {number} decimals - 小数位数，默认2位
  * @returns {string} 格式化后的货币字符串
  */
-export function formatCurrency(amount, currency = 'CNY') {
+export function formatCurrency(amount, currency = 'CNY', decimals = 2) {
   const symbols = {
     'CNY': '¥',
     'USD': '$',
     'EUR': '€'
   };
-  
+
   const symbol = symbols[currency] || currency;
-  return `${symbol}${amount.toFixed(2)}`;
+
+  // 添加千分位分隔符
+  const parts = amount.toFixed(decimals).split('.');
+  parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+
+  return `${symbol}${parts.join('.')}`;
 }
 
 /**
@@ -102,9 +108,44 @@ export function formatCurrency(amount, currency = 'CNY') {
  */
 export function formatPercentage(value, total, decimals = 1) {
   if (total === 0) return '0%';
-  
+
   const percentage = (value / total) * 100;
   return `${percentage.toFixed(decimals)}%`;
+}
+
+/**
+ * 获取流量状态
+ * @param {number} used - 已使用流量
+ * @param {number} total - 总流量
+ * @returns {object} 状态对象 { level, color, warning }
+ */
+export function getTrafficStatus(used, total) {
+  const percent = (used / total) * 100;
+
+  if (percent >= 90) {
+    return {
+      level: 'critical',
+      color: 'error',
+      warning: true,
+      message: '流量即将耗尽，请及时充值'
+    };
+  }
+
+  if (percent >= 80) {
+    return {
+      level: 'warning',
+      color: 'warning',
+      warning: true,
+      message: '流量使用已超过80%'
+    };
+  }
+
+  return {
+    level: 'normal',
+    color: 'success',
+    warning: false,
+    message: ''
+  };
 }
 
 /**
@@ -133,7 +174,7 @@ export const storage = {
       console.error('存储失败:', error);
     }
   },
-  
+
   /**
    * 获取存储项
    * @param {string} key - 键名
@@ -149,7 +190,7 @@ export const storage = {
       return defaultValue;
     }
   },
-  
+
   /**
    * 删除存储项
    * @param {string} key - 键名
@@ -157,7 +198,7 @@ export const storage = {
   remove(key) {
     localStorage.removeItem(key);
   },
-  
+
   /**
    * 清空所有存储
    */
@@ -179,7 +220,7 @@ export const dom = {
   $(selector, parent = document) {
     return parent.querySelector(selector);
   },
-  
+
   /**
    * 查询多个元素
    * @param {string} selector - 选择器
@@ -189,7 +230,7 @@ export const dom = {
   $$(selector, parent = document) {
     return parent.querySelectorAll(selector);
   },
-  
+
   /**
    * 添加类名
    * @param {Element} element - 元素
@@ -198,7 +239,7 @@ export const dom = {
   addClass(element, className) {
     element.classList.add(className);
   },
-  
+
   /**
    * 移除类名
    * @param {Element} element - 元素
@@ -207,7 +248,7 @@ export const dom = {
   removeClass(element, className) {
     element.classList.remove(className);
   },
-  
+
   /**
    * 切换类名
    * @param {Element} element - 元素
@@ -216,7 +257,7 @@ export const dom = {
   toggleClass(element, className) {
     element.classList.toggle(className);
   },
-  
+
   /**
    * 判断是否包含类名
    * @param {Element} element - 元素
@@ -226,7 +267,7 @@ export const dom = {
   hasClass(element, className) {
     return element.classList.contains(className);
   },
-  
+
   /**
    * 创建元素
    * @param {string} tag - 标签名
@@ -236,7 +277,7 @@ export const dom = {
    */
   create(tag, attrs = {}, content = '') {
     const element = document.createElement(tag);
-    
+
     Object.keys(attrs).forEach(key => {
       if (key === 'className') {
         element.className = attrs[key];
@@ -246,13 +287,13 @@ export const dom = {
         element.setAttribute(key, attrs[key]);
       }
     });
-    
+
     if (typeof content === 'string') {
       element.innerHTML = content;
     } else if (content instanceof Element) {
       element.appendChild(content);
     }
-    
+
     return element;
   }
 };
@@ -301,15 +342,15 @@ export function deepClone(obj) {
   if (obj === null || typeof obj !== 'object') {
     return obj;
   }
-  
+
   if (obj instanceof Date) {
     return new Date(obj.getTime());
   }
-  
+
   if (obj instanceof Array) {
     return obj.map(item => deepClone(item));
   }
-  
+
   if (obj instanceof Object) {
     const clonedObj = {};
     for (const key in obj) {
@@ -329,11 +370,11 @@ export function deepClone(obj) {
 export function parseUrlParams(url = window.location.href) {
   const params = {};
   const urlObj = new URL(url);
-  
+
   for (const [key, value] of urlObj.searchParams) {
     params[key] = value;
   }
-  
+
   return params;
 }
 
@@ -345,11 +386,11 @@ export function parseUrlParams(url = window.location.href) {
 export function generateId(length = 8) {
   const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
   let result = '';
-  
+
   for (let i = 0; i < length; i++) {
     result += chars.charAt(Math.floor(Math.random() * chars.length));
   }
-  
+
   return result;
 }
 
@@ -380,7 +421,7 @@ export function showToast(message, type = 'info', duration = 3000) {
   if (oldToast) {
     oldToast.remove();
   }
-  
+
   // 创建提示元素
   const toast = dom.create('div', {
     className: `toast toast-${type}`,
@@ -391,8 +432,8 @@ export function showToast(message, type = 'info', duration = 3000) {
       padding: '12px 24px',
       borderRadius: '8px',
       backgroundColor: type === 'success' ? '#10b981' :
-                       type === 'error' ? '#ef4444' :
-                       type === 'warning' ? '#f59e0b' : '#3b82f6',
+        type === 'error' ? '#ef4444' :
+          type === 'warning' ? '#f59e0b' : '#3b82f6',
       color: 'white',
       boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
       zIndex: '9999',
@@ -400,9 +441,9 @@ export function showToast(message, type = 'info', duration = 3000) {
       fontWeight: '500'
     }
   }, message);
-  
+
   document.body.appendChild(toast);
-  
+
   // 自动移除
   setTimeout(() => {
     toast.style.animation = 'slideOut 0.3s ease-out';

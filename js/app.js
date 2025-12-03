@@ -4,6 +4,7 @@
  */
 
 import dashboard from './dashboard.js';
+import shopManager from './shop.js';
 import { dom } from './utils.js';
 
 /**
@@ -217,19 +218,9 @@ class App {
     /**
      * 加载订阅页面
      */
-    loadSubscribePage() {
-        const content = dom.$('.content');
-        if (!content) return;
-
-        content.innerHTML = `
-      <div class="card">
-        <h2 class="card-title mb-lg">购买订阅</h2>
-        <div class="text-secondary">
-          <p class="mb-md">购买订阅页面开发中...</p>
-          <p>这里将展示所有可用的订阅套餐和购买选项。</p>
-        </div>
-      </div>
-    `;
+    async loadSubscribePage() {
+        // 初始化购买订阅页面
+        await shopManager.init();
     }
 
     /**

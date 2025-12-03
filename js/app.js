@@ -223,9 +223,9 @@ class App {
 
         content.innerHTML = `
       <div class="card">
-        <h2 class="card-title mb-lg">节点订阅</h2>
+        <h2 class="card-title mb-lg">购买订阅</h2>
         <div class="text-secondary">
-          <p class="mb-md">节点订阅页面开发中...</p>
+          <p class="mb-md">购买订阅页面开发中...</p>
           <p>这里将展示所有可用的订阅套餐和购买选项。</p>
         </div>
       </div>

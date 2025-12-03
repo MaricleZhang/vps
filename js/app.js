@@ -6,6 +6,7 @@
 import dashboard from './dashboard.js';
 import shopManager from './shop.js';
 import checkoutManager from './checkout.js';
+import nodesManager from './nodes.js';
 import { dom } from './utils.js';
 
 /**
@@ -252,19 +253,9 @@ class App {
     /**
      * 加载节点页面
      */
-    loadNodesPage() {
-        const content = dom.$('.content');
-        if (!content) return;
-
-        content.innerHTML = `
-      <div class="card">
-        <h2 class="card-title mb-lg">节点优选</h2>
-        <div class="text-secondary">
-          <p class="mb-md">节点优选页面开发中...</p>
-          <p>这里将展示所有节点的状态、延迟和负载信息。</p>
-        </div>
-      </div>
-    `;
+    async loadNodesPage() {
+        // 初始化节点页面
+        await nodesManager.init();
     }
 
     /**

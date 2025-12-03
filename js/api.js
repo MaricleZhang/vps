@@ -487,43 +487,53 @@ export const api = {
      */
     auth: {
         /**
-         * 登录
-         * @param {string} email - 邮箱
-         * @param {string} password - 密码
-         * @returns {Promise<object>}
+         * 用户登录
+         * @param {string} email 
+         * @param {string} password 
          */
         async login(email, password) {
-            // 模拟登录请求
-            // return http.post('/auth/login', { email, password });
-
-            // 模拟API延迟
+            // 模拟API调用延迟
             await new Promise(resolve => setTimeout(resolve, 800));
 
             // 模拟验证
-            if (email && password) {
-                // 模拟成功响应
+            if (email === 'demo@example.com' && password === '123456') {
                 return {
-                    token: 'mock_token_' + Date.now(),
+                    token: 'mock_jwt_token_' + Date.now(),
                     user: {
                         id: 1,
-                        username: 'ME',
                         email: email,
-                        avatar: 'M'
+                        name: 'Demo User'
+                    }
+                };
+            } else if (email && password) {
+                // 允许任意非空账号登录（演示用）
+                return {
+                    token: 'mock_jwt_token_' + Date.now(),
+                    user: {
+                        id: Math.floor(Math.random() * 1000),
+                        email: email,
+                        name: email.split('@')[0]
                     }
                 };
             } else {
-                throw new Error('请输入邮箱和密码');
+                throw new Error('邮箱或密码错误');
             }
         },
 
         /**
-         * 注册
-         * @param {string} email - 邮箱
-         * @param {string} password - 密码
-         * @returns {Promise<object>}
+         * 用户注册
+         * @param {string} email 
+         * @param {string} password 
          */
-        register(email, password) {
-            return http.post('/auth/register', { email, password });
+        async register(email, password) {
+            // 模拟API调用延迟
+            await new Promise(resolve => setTimeout(resolve, 1000));
+
+            // 模拟注册成功
+            return {
+                success: true,
+                message: '注册成功'
+            };
         },
 
         /**
@@ -531,7 +541,7 @@ export const api = {
          */
         logout() {
             localStorage.removeItem('access_token');
-            window.location.href = 'login.html';
+            window.location.href = '/login.html';
         }
     },
 

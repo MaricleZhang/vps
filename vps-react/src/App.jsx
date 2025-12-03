@@ -1,6 +1,8 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
 import AppLayout from '@/components/layout/AppLayout';
 import Login from '@/pages/Login';
+import Register from '@/pages/Register';
+import ForgotPassword from '@/pages/ForgotPassword';
 import Dashboard from '@/pages/Dashboard';
 import Shop from '@/pages/Shop';
 import Nodes from '@/pages/Nodes';
@@ -16,6 +18,8 @@ function App() {
       <Routes>
         {/* 公开路由 */}
         <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
 
         {/* 受保护路由 */}
         <Route

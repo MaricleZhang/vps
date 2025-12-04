@@ -4,7 +4,7 @@
 
 // API 基础配置
 export const API_CONFIG = {
-    baseURL: '/api',
+    baseURL: 'http://localhost:8080/api',
     timeout: 10000,
 };
 

@@ -31,13 +31,13 @@ export const authService = {
      * 用户注册
      */
     async register(email, password, inviteCode) {
-        // 模拟 API 调用延迟
-        await new Promise(resolve => setTimeout(resolve, 1000));
+        const response = await api.post('/api/v1/auth/register', {
+            email,
+            password,
+            invite_code: inviteCode,
+        });
 
-        return {
-            success: true,
-            message: '注册成功',
-        };
+        return response;
     },
 
     /**
